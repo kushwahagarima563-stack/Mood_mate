@@ -1,0 +1,110 @@
+// prisma/schema.prisma
+
+datasource db {
+  provider   = "postgresql"
+  url        = env("DATABASE_URL")
+  directUrl  = env("DIRECT_URL")
+
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// -----------------------
+// User & Auth Related
+// -----------------------
+model User {
+  id        String          @id @default(cuid())
+  email     String          @unique
+  name      String?
+  createdAt DateTime        @default(now())
+  updatedAt DateTime        @updatedAt
+  analyses  AudioAnalysis[] @relation("UserAudioAnalyses")
+  entries   Entry[]
+  sessions  Session[]
+}
+
+// -----------------------
+// Audio Analysis
+// -----------------------
+model AudioAnalysis {
+  id             String   @id @default(cuid())
+  userId         String
+  transcript     String
+  sentiment      Json
+  geminiResponse String
+  createdAt      DateTime @default(now())
+  user           User     @relation("UserAudioAnalyses", fields: [userId], references: [id])
+}
+
+// -----------------------
+// Entry / Journal
+// -----------------------
+model Entry {
+  id        String   @id @default(cuid())
+  userId    String
+  content   String
+  mood      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id])
+}
+
+// -----------------------
+// Chat / Session
+// -----------------------
+model Session {
+  id        String    @id @default(cuid())
+  userId    String?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  messages  Message[]
+  user      User?     @relation(fields: [userId], references: [id])
+}
+
+model Message {
+  id        String   @id @default(cuid())
+  sessionId String
+  role      String
+  content   String
+  createdAt DateTime @default(now())
+  session   Session  @relation(fields: [sessionId], references: [id])
+}
+
+model ChatSession {
+  id             String    @id @default(cuid())
+  userId         String
+  transcript     String
+  sentiment      String    // Positive / Neutral / Negative
+  geminiResponse String?
+  createdAt      DateTime  @default(now())
+}
+
+// -----------------------
+// Selfie / Emotion Logs
+// -----------------------
+
+
+// -----------------------
+// Music Logs
+// -----------------------
+model MusicLog {
+  id         String   @id @default(uuid())
+  emotion    String
+  weather    String
+  song_title String
+  song_id    String
+  played_at  DateTime @default(now())
+
+  @@map("music_logs")  // Table will be named "music_logs"
+}
+model FaceEmotionLog {
+  id         String   @id @default(cuid())
+  userId     String?  // Optional if you want to associate with a user
+  imageUrl   String?  // Optional: the uploaded selfie URL
+  apiResponse Json     // Full API response JSON
+  createdAt  DateTime @default(now())
+
+  @@map("face_emotion_logs")
+}
