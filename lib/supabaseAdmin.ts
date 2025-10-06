@@ -1,16 +1,14 @@
 import { createClient } from '@supabase/supabase-js';
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL as string;
-const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY as string;
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL as string | undefined;
+const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY as string | undefined;
 
-if (!supabaseUrl) {
-  throw new Error('Missing NEXT_PUBLIC_SUPABASE_URL. Set it in your environment.');
-}
-if (!supabaseServiceKey) {
-  throw new Error('Missing SUPABASE_SERVICE_ROLE_KEY. Set it in your environment.');
-}
-
-export const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey);
+// Do not throw during import to avoid build-time crashes on Vercel.
+// Instead, export a nullable client and let callers handle missing envs at runtime.
+export const supabaseAdmin =
+  supabaseUrl && supabaseServiceKey
+    ? createClient(supabaseUrl, supabaseServiceKey)
+    : null;
 
 const sleep = (ms: number) => new Promise(res => setTimeout(res, ms));
 
@@ -19,6 +17,9 @@ export async function ensureBucket(
   bucket: string,
   options: { public?: boolean; fileSizeLimit?: string; allowedMimeTypes?: string[] } = { public: true }
 ) {
+  if (!supabaseAdmin) {
+    throw new Error('Supabase is not configured. Set NEXT_PUBLIC_SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY.');
+  }
   // Try to get the bucket first (retry on transient failures)
   let lastErr: any;
   for (let attempt = 1; attempt <= 3; attempt++) {

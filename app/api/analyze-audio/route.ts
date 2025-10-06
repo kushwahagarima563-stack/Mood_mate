@@ -4,7 +4,10 @@ import { supabaseAdmin, ensureBucket } from '../../../lib/supabaseAdmin';
 import { HumeClient } from 'hume';
 import { getChatResponse } from '../../../lib/gemini';
 
- // Optional: App Router config
+// Ensure this route runs on Node.js (Prisma not supported on Edge)
+export const runtime = 'nodejs';
+// Prevent static optimization attempts during build
+export const dynamic = 'force-dynamic';
 
 const hume = new HumeClient({
   apiKey: process.env.HUME_API_KEY || '',

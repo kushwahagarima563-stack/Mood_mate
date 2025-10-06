@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
-import { PrismaClient } from "@prisma/client";
+import { prisma } from "../../../lib/prisma";
 
-const prisma = new PrismaClient();
+// Ensure Node.js runtime (Prisma is not supported on the Edge runtime)
+export const runtime = "nodejs";
 
 export async function POST(req: NextRequest) {
   try {

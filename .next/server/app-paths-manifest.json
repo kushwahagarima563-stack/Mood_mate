@@ -1,26 +1,6 @@
 {
   "/_not-found/page": "app/_not-found/page.js",
-  "/api/analyze-audio/route": "app/api/analyze-audio/route.js",
-  "/api/chat/route": "app/api/chat/route.js",
-  "/api/chat-analysis/route": "app/api/chat-analysis/route.js",
-  "/api/emotion/upload/route": "app/api/emotion/upload/route.js",
-  "/api/assistant/route": "app/api/assistant/route.js",
-  "/api/emotion/route": "app/api/emotion/route.js",
-  "/api/entries/route": "app/api/entries/route.js",
-  "/api/sessions/[id]/route": "app/api/sessions/[id]/route.js",
-  "/api/selfie/route": "app/api/selfie/route.js",
-  "/api/musiclogs/logs/route": "app/api/musiclogs/logs/route.js",
-  "/api/musiclogs/route": "app/api/musiclogs/route.js",
-  "/music/page": "app/music/page.js",
-  "/api/youtube/route": "app/api/youtube/route.js",
-  "/audio-chat/page": "app/audio-chat/page.js",
-  "/selfie/page": "app/selfie/page.js",
   "/page": "app/page.js",
-  "/sign-up/page": "app/sign-up/page.js",
-  "/api/sessions/route": "app/api/sessions/route.js",
   "/dashboard/page": "app/dashboard/page.js",
-  "/sign-in/page": "app/sign-in/page.js",
-  "/api/audio/upload/route": "app/api/audio/upload/route.js",
-  "/api/selfie/analyze/route": "app/api/selfie/analyze/route.js",
-  "/api/voice/route": "app/api/voice/route.js"
+  "/selfie/page": "app/selfie/page.js"
 }
