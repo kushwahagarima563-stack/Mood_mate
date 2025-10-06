@@ -1,8 +1,16 @@
 'use client';
 
 import { useEffect, useState, useMemo } from 'react';
-import { Session } from '@prisma/client';
 import { Plus, MessageSquare, Calendar, Clock, ChevronRight, Sparkles } from 'lucide-react';
+
+// Client-side DTO for sessions returned by /api/sessions
+// Dates are serialized as ISO strings in JSON responses
+type SessionItem = {
+  id: string;
+  userId: string | null;
+  createdAt: string; // ISO string
+  updatedAt: string; // ISO string
+};
 
 interface SidebarProps {
   onSessionSelect: (sessionId: string) => void;
@@ -10,7 +18,7 @@ interface SidebarProps {
 }
 
 export default function Sidebar({ onSessionSelect, onNewChat }: SidebarProps) {
-  const [sessions, setSessions] = useState<Session[]>([]);
+  const [sessions, setSessions] = useState<SessionItem[]>([]);
   const [selectedSession, setSelectedSession] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -21,7 +29,14 @@ export default function Sidebar({ onSessionSelect, onNewChat }: SidebarProps) {
         const res = await fetch('/api/sessions');
         const data = await res.json();
         if (Array.isArray(data)) {
-          setSessions(data);
+          // Ensure createdAt/updatedAt are strings
+          const normalized: SessionItem[] = data.map((s: any) => ({
+            id: String(s.id),
+            userId: s.userId ?? null,
+            createdAt: typeof s.createdAt === 'string' ? s.createdAt : new Date(s.createdAt).toISOString(),
+            updatedAt: typeof s.updatedAt === 'string' ? s.updatedAt : new Date(s.updatedAt).toISOString(),
+          }));
+          setSessions(normalized);
         }
       } catch (error) {
         console.error('Error fetching sessions:', error);
@@ -62,7 +77,7 @@ export default function Sidebar({ onSessionSelect, onNewChat }: SidebarProps) {
   };
 
   const groupedSessions = useMemo(() => {
-    const grouped: { [key: string]: Session[] } = {};
+    const grouped: { [key: string]: SessionItem[] } = {};
     if (Array.isArray(sessions)) {
       sessions.forEach(session => {
         if (session && session.createdAt) {

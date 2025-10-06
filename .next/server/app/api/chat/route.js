@@ -12,4 +12,4 @@ Guidelines:
 - Do not provide medical or diagnostic advice.
 - If the user mentions self-harm, suicidal thoughts, or crisis, respond compassionately and suggest reaching out to a professional or a trusted helpline.
 - Always prioritize empathy and companionship over solutions.
-`}]}}),i=await a.sendMessage(t),n=await i.response;return await n.text()}async function n(e){let t=s.getGenerativeModel({model:"embedding-001"});return(await t.embedContent(e)).embedding.values}},72331:(e,t,a)=>{a.d(t,{_:()=>s});var r=a(53524);let s=global.prisma||new r.PrismaClient({log:["query"]})}};var t=require("../../../webpack-runtime.js");t.C(e);var a=e=>t(t.s=e),r=t.X(0,[9276,5972,1258],()=>a(78820));module.exports=r})();
+`}]}}),i=await a.sendMessage(t),n=await i.response;return await n.text()}async function n(e){let t=s.getGenerativeModel({model:"embedding-001"});return(await t.embedContent(e)).embedding.values}},72331:(e,t,a)=>{a.d(t,{_:()=>s});var r=a(53524);let s=global.prisma||new r.PrismaClient({log:["query"]})}};var t=require("../../../webpack-runtime.js");t.C(e);var a=e=>t(t.s=e),r=t.X(0,[276,972,258],()=>a(78820));module.exports=r})();
